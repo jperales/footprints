@@ -1,7 +1,8 @@
 library(dplyr)
-b = import('base')
-io = import('io')
-ar = import('array')
+library(modules)
+b = import('../../util/ebits/base')
+io = import('../../util/ebits/io')
+ar = import('../../util/ebits/array')
 
 #' Constructs a matrix of all control conditions
 #'

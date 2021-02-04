@@ -1,10 +1,11 @@
-#!/usr/bin/env Rscript
-b = import('base')
-io = import('io')
-ma = import('process/microarray')
-idmap = import('process/idmap')
+library(modules)
+library(ArrayExpress)
+b = import("../../util/ebits/base/")
+io = import('../../util/ebits/base/')
+ma = import('../../util/ebits/process/microarray')
+idmap = import('../../util/ebits/process/idmap')
 
-ACCESSION = commandArgs(TRUE)[1] %or% 'E-GEOD-8346'
+ACCESSION = commandArgs(TRUE)[1] %or% 'E-GEOD-40266'
 OUTFILE = commandArgs(TRUE)[2] %or% paste0(ACCESSION, ".RData")
 
 # read raw data, normalize, qc

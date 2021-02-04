@@ -12,6 +12,7 @@
 #'
 #' It will discard all experiments for which there are not at least
 #' two controls and one perturbed arrays.
+library(modules)
 invisible(NULL)
 
 subset_expr = function(rec) {
@@ -47,13 +48,14 @@ subset_expr = function(rec) {
 
 if (is.null(module_name())) {
     library(dplyr)
-    b = import('base')
-    io = import('io')
-    ar = import('array')
+    b = import('../../util/ebits/base')
+    io = import('../../util/ebits/io')
+    ar = import('../../util/ebits/array')
 
-    EXPR = commandArgs(TRUE) %or% list.files("normalized", "\\.RData", full.names=TRUE)
-    YAML = list.files("../index", "[0-9]+\\.yaml$", recursive=TRUE, full.names=TRUE)
-    OUTFILE = "expr.RData"
+#     EXPR = commandArgs(TRUE) %or% list.files("../../data/normalized", "\\.RData", full.names=TRUE)
+    EXPR = list.files("./data/normalized", "\\.RData", full.names=TRUE)
+    YAML = list.files("./index", "[0-9]+\\.yaml$", recursive=TRUE, full.names=TRUE)
+    OUTFILE = "./data/expr.RData"
 
     # load all index files
     records = lapply(YAML, function(y) io$read_yaml(y, drop=FALSE)) %>%
