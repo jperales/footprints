@@ -13,7 +13,10 @@ rule all:
 		#expand("data/normalized/{acc}.RData", acc=ACCESSION)
 		#rdat = "data/expr.RData"
 		"data/zscores.RData",
-		"data/zscores_commonNULL.RData"
+		"data/zscores_commonNULL.RData",
+		"model/model_matrix.RData",
+		"model/model_matrix.csv",
+		"model/model_matrix_full.csv"
 
 
 rule normalize:
@@ -30,6 +33,7 @@ rule normalize:
 		"Normalizing Accessions"
 	shell:
 		'set +eu '
+		' && (test -d data || mkdir data) '
 		' && (test -d data/normalized/ || mkdir data/normalized) '
 		' && . $(conda info --base)/etc/profile.d/conda.sh '
 		' && conda activate envs/data '
@@ -81,3 +85,21 @@ rule zscoreNULL:
 		' && conda activate envs/data '
 		" && $CONDA_PREFIX/bin/Rscript {input.script} {input.rdat} {output.rdat}"
 
+rule model_matrix:
+	input:
+		script = "workflow/scripts/model_matrix_v2.R",
+		rdat = "data/zscores.RData"
+	output:
+		rdat = "model/model_matrix.RData",
+		csv1 = "model/model_matrix.csv",
+		csv2 = "model/model_matrix_full.csv"
+	params:
+		prefix = lambda wildcards, output: output[0][:-6]
+	message:
+		"Creating model matrix"
+	shell:
+		'set +eu '
+		' && (test -d model || mkdir model) '
+		' && . $(conda info --base)/etc/profile.d/conda.sh '
+		' && conda activate envs/data '
+		" && $CONDA_PREFIX/bin/Rscript {input.script} {input.rdat} {params.prefix}"
