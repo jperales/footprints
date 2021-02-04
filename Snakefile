@@ -18,7 +18,6 @@ rule all:
 		"model/model_matrix.csv",
 		"model/model_matrix_full.csv"
 
-
 rule normalize:
 	input:
 		script = "workflow/scripts/data_normalization.R",
@@ -63,20 +62,6 @@ rule zscore:
 		rdat = "data/expr.RData"
 	output:
 		rdat = "data/zscores.RData"
-	message:
-		"Z-scoring expression"
-	shell:
-		'set +eu '
-		' && . $(conda info --base)/etc/profile.d/conda.sh '
-		' && conda activate envs/data '
-		" && $CONDA_PREFIX/bin/Rscript {input.script} {input.rdat} {output.rdat}"
-
-rule zscoreNULL:
-	input:
-		script = "workflow/scripts/data_zscores_commonNULL.R",
-		rdat = "data/expr.RData"
-	output:
-		rdat = "data/zscores_commonNULL.RData"
 	message:
 		"Z-scoring expression"
 	shell:
