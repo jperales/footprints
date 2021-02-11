@@ -10,8 +10,8 @@ ACCESSION = [os.path.splitext(os.path.basename(k))[0] for k in YAML]
 
 rule all:
 	input:
-		#expand("data/normalized/{acc}.RData", acc=ACCESSION)
-		#rdat = "data/expr.RData"
+		expand("data/normalized/{acc}.RData", acc=ACCESSION),
+		"data/expr.RData",
 		"data/zscores.RData",
 		"data/zscores_commonNULL.RData",
 		"model/model_matrix.RData",
